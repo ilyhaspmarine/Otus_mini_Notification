@@ -35,6 +35,7 @@ async def get_notifications_for_user(
     notifications = result.scalars().all()
     return notifications
 
+
 @app.get("/order/{order_id}", summary = 'Get notifications for order', tags=['Notifications'], response_model=List[NotificationReturn])
 async def get_notifications_for_order(
     order_id: uuid.UUID,
