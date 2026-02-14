@@ -22,7 +22,7 @@ class OrderUpdateMessage(OrderID, UserName, Event):
     updated_at: datetime = Field() 
 
 
-class NotificationReturn(NotificationID, UserName):
+class NotificationReturn(NotificationID, UserName, OrderID):
     email: EmailStr
     sent_at: datetime
     text: str
