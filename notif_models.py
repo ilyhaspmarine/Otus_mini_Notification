@@ -26,3 +26,5 @@ class NotificationReturn(NotificationID, UserName):
     email: EmailStr
     sent_at: datetime
     text: str
+    class Config:
+        from_attributes = True
