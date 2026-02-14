@@ -8,7 +8,7 @@ from typing import List
 from notif_db_schema import Notification as NotificationSchema
 
 
-app = FastAPI(title="Order Service", version="1.0.0")
+app = FastAPI(title="Notification Service", version="1.0.0")
 
 
 @app.on_event("startup")
