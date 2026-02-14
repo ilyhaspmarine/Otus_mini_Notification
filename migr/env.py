@@ -43,8 +43,8 @@ def run_migrations_offline() -> None:
 
     """
     driver: str = "postgresql+" + os.getenv("DB_DRIVER_SYNC", "psycopg2")
-    username: str = os.getenv("DB_USER", "postgres")
-    password: str = os.getenv("DB_PASSWORD", "PSwd1202")
+    username: str = os.getenv("DB_USER", "username")
+    password: str = os.getenv("DB_PASSWORD", "password")
     host: str = os.getenv("DB_HOST", "localhost")
     port: str = os.getenv("DB_PORT", "5432")
     database: str = os.getenv("DB_NAME", "notifications")
@@ -79,8 +79,8 @@ def run_migrations_online() -> None:
 
     """
     driver: str = "postgresql+" + os.getenv("DB_DRIVER_SYNC", "psycopg2")
-    username: str = os.getenv("DB_USER", "postgres")
-    password: str = os.getenv("DB_PASSWORD", "PSwd1202")
+    username: str = os.getenv("DB_USER", "username")
+    password: str = os.getenv("DB_PASSWORD", "password")
     host: str = os.getenv("DB_HOST", "localhost")
     port: str = os.getenv("DB_PORT", "5432")
     database: str = os.getenv("DB_NAME", "notifications")
