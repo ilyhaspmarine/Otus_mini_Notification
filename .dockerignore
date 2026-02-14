@@ -1,0 +1,6 @@
+__pycache__/
+Dockerfile
+notif/
+README.md
+.gitignore
+.dockerignore

@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "notif-app.appName" . | quote }}
+  labels:
+    app: {{ include "notif-app.appName" . | quote }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "notif-app.appName" . | quote }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "notif-app.appName" . | quote }}
+    spec:
+      containers:
+        - name: {{ include "notif-app.appName" . | quote }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          ports:
+            - containerPort: 8000
+          env:
+          - name: KAFKA_BOOTSTRAP_SERVERS
+            value: {{ .Values.broker.bootstrap_servers }}
+          - name: KAFKA_ORDERS_TOPIC
+            value: {{ .Values.broker.topic }}
+          - name: DB_DRIVER_ASYNC 
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "notif-app.configMapName" . | quote }}
+                key: DB_DRIVER_ASYNC        
+          - name: DB_HOST 
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "notif-app.configMapName" . | quote }}
+                key: DB_HOST     
+          - name: DB_PORT 
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "notif-app.configMapName" . | quote }}
+                key: DB_PORT                                             
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.postgresql.auth.existingSecret }} 
+                key: username
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.postgresql.auth.existingSecret }}  
+                key: password
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.postgresql.auth.existingSecret }}
+                key: database   
+          - name: KAFKA_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: kafka-secret
+                key: client-passwords              
+          - name: KAFKA_USER
+            value: {{ .Values.broker.user  }}     
+          - name: PROFILE_HOST
+            value: {{ .Values.profile_url.host }}
+          - name: PROFILE_PATH
+            value: {{ .Values.profile_url.path }}
+          - name: PROFILE_GET_ENDPOINT
+            value: {{ .Values.profile_url.get }}
+          - name: PROFILE_PORT
+            value:  {{ .Values.profile_url.port | quote}}                                  
+          livenessProbe:
+            httpGet:
+              path: /health/
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health/
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5  

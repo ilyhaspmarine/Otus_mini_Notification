@@ -1,0 +1,66 @@
+# Default values for notif.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+# This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+replicaCount: 1
+
+# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+image:
+  repository: comrademaper/notifications
+  # This sets the pull policy for images.
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: latest
+
+# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: ClusterIP
+  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  port: 80
+  portName: http
+
+ingress:
+  pathType: ImplementationSpecific
+  host: arch.homework
+  path: /notifications
+  ingressClassName: nginx
+
+postgresql:
+  nameOverride: "notif-postgresql"
+
+  auth:
+    username: notif-app
+    database: notif_db
+    existingSecret: notif-db-secret
+    secretKeys:
+      userPasswordKey: password
+
+  primary:
+    service:
+      type: ClusterIP
+      port: 5432
+
+    persistence:
+      enabled: true
+      size: 1Gi
+      storageClass: standard
+
+  architecture: "standalone"
+
+configMap:
+  driver_sync: "psycopg2"
+  driver_async: "asyncpg"
+
+broker:
+  bootstrap_servers: "kafka.kafka.svc.cluster.local:9092"
+  topic: "orders"
+  user: "user1"
+
+profile_url:
+  host: "profile-service.profile"
+  path: None
+  get: "users"
+  port: "80"

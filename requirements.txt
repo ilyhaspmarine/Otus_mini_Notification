@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+asyncpg
+alembic
+psycopg2-binary
+pydantic
+pydantic_settings
+prometheus_fastapi_instrumentator
+python-multipart
+confluent-kafka==2.3.0
+email_validator
+httpx
