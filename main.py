@@ -26,7 +26,7 @@ def healthcheck():
     return {'status': 'OK'}
 
 
-@app.get("/user/{req_uname}", summary = 'Get notifications for user', tags=['Notofications'], response_model=List[NotificationReturn])
+@app.get("/user/{req_uname}", summary = 'Get notifications for user', tags=['Notifications'], response_model=List[NotificationReturn])
 async def get_notifications_for_user(
     req_uname: str,
     db = Depends(_get_db)
@@ -35,7 +35,7 @@ async def get_notifications_for_user(
     notifications = result.scalars().all()
     return notifications
 
-@app.get("/order/{order_id}", summary = 'Get notifications for user', tags=['Notofications'], response_model=List[NotificationReturn])
+@app.get("/order/{order_id}", summary = 'Get notifications for order', tags=['Notifications'], response_model=List[NotificationReturn])
 async def get_notifications_for_order(
     order_id: uuid.UUID,
     db = Depends(_get_db)
