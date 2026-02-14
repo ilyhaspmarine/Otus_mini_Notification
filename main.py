@@ -26,11 +26,20 @@ def healthcheck():
     return {'status': 'OK'}
 
 
-@app.get("/notifications/{req_uname}", summary = 'Get notifications for user', tags=['Notofications'], response_model=List[NotificationReturn])
+@app.get("/user/{req_uname}", summary = 'Get notifications for user', tags=['Notofications'], response_model=List[NotificationReturn])
 async def get_notifications_for_user(
     req_uname: str,
     db = Depends(_get_db)
 ):
     result = await db.execute(select(NotificationSchema).filter(NotificationSchema.username == req_uname))
+    notifications = result.scalars().all()
+    return notifications
+
+@app.get("/order/{order_id}", summary = 'Get notifications for user', tags=['Notofications'], response_model=List[NotificationReturn])
+async def get_notifications_for_order(
+    order_id: uuid.UUID,
+    db = Depends(_get_db)
+):
+    result = await db.execute(select(NotificationSchema).filter(NotificationSchema.order_id == order_id))
     notifications = result.scalars().all()
     return notifications

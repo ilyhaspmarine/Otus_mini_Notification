@@ -23,6 +23,7 @@ async def handle_order_message(
         notification = NotificationSchema(
             id = uuid.uuid4(),
             username = message.username,
+            order_id = message.order_id,
             text = get_notif_text_from_event(message),
             email = email,
             sent_at = datetime.utcnow()
